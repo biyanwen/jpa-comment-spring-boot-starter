@@ -6,7 +6,7 @@
 
     <groupId>com.github.biyanwen</groupId>
     <artifactId>jpa-comment-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <name>jpa-comment-spring-boot-starter</name>
     <description>jpa-comment-spring-boot-starter</description>

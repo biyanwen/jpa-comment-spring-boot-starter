@@ -91,13 +91,15 @@ public class CommentIntegrator implements Integrator {
 	private void propertyComment(PersistentClass persistentClass, String columnName) {
 		try {
 			String comment = getPropertyComment(persistentClass, columnName);
-			String sqlColumnName = persistentClass.getProperty(columnName).getValue().getColumnIterator().next().getText();
-			Iterator<org.hibernate.mapping.Column> columnIterator = persistentClass.getTable().getColumnIterator();
-			while (columnIterator.hasNext()) {
-				org.hibernate.mapping.Column column = columnIterator.next();
-				if (sqlColumnName.equalsIgnoreCase(column.getName())) {
-					column.setComment(comment);
-					break;
+			if (persistentClass.getProperty(columnName).getValue().getColumnIterator().hasNext()) {
+				String sqlColumnName = persistentClass.getProperty(columnName).getValue().getColumnIterator().next().getText();
+				Iterator<org.hibernate.mapping.Column> columnIterator = persistentClass.getTable().getColumnIterator();
+				while (columnIterator.hasNext()) {
+					org.hibernate.mapping.Column column = columnIterator.next();
+					if (sqlColumnName.equalsIgnoreCase(column.getName())) {
+						column.setComment(comment);
+						break;
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -107,15 +109,17 @@ public class CommentIntegrator implements Integrator {
 
 	private String getPropertyComment(PersistentClass persistentClass, String columnName) throws Exception {
 		String comment = null;
-		Field field = ReflectUtil.getField(persistentClass.getMappedClass(), columnName);;
-		if (field.isAnnotationPresent(ApiModelProperty.class)) {
-			comment = field.getAnnotation(ApiModelProperty.class).value();
-		} else {
-			PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), persistentClass.getMappedClass());
-			Method readMethod = descriptor.getReadMethod();
-			ApiModelProperty apiModelProperty = readMethod.getAnnotation(ApiModelProperty.class);
-			if (apiModelProperty != null) {
-				comment = apiModelProperty.value();
+		Field field = ReflectUtil.getField(persistentClass.getMappedClass(), columnName);
+		if (field != null) {
+			if (field.isAnnotationPresent(ApiModelProperty.class)) {
+				comment = field.getAnnotation(ApiModelProperty.class).value();
+			} else {
+				PropertyDescriptor descriptor = new PropertyDescriptor(field.getName(), persistentClass.getMappedClass());
+				Method readMethod = descriptor.getReadMethod();
+				ApiModelProperty apiModelProperty = readMethod.getAnnotation(ApiModelProperty.class);
+				if (apiModelProperty != null) {
+					comment = apiModelProperty.value();
+				}
 			}
 		}
 		return comment;

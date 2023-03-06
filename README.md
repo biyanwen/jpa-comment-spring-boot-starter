@@ -30,7 +30,6 @@ These questions will be solved by this tool.
 #### Add maven address
 
 ~~~xml
-
 <dependency>
     <groupId>com.github.biyanwen</groupId>
     <artifactId>jpa-comment-spring-boot-starter</artifactId>
@@ -44,7 +43,6 @@ This tool uses the `@ApiModel` annotation of swagger. You should invoke the `Api
 annotation on fields or get methods.
 
 ~~~java
-
 @Entity
 @Table(name = "USER")
 @Data

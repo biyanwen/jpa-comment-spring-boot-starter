@@ -33,7 +33,7 @@ These questions will be solved by this tool.
 <dependency>
     <groupId>com.github.biyanwen</groupId>
     <artifactId>jpa-comment-spring-boot-starter</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ~~~
 
